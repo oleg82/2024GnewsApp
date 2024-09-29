@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: GNews API
+  description: An API for searching and retrieving news articles from over 60,000 sources.
+  version: 4.0.0
+servers:
+  - url: https://gnews.io/api/v4
+    description: Main (production) server
+paths:
+  /top-headlines:
+    get:
+        summary: Top Headlines Endpoint
+        parameters:
+          - name: category
+            in: query
+            required: true
+            description: This parameter allows you to change the category for the request.
+            schema:
+              type: string
+              enum:
+                - general
+                - world
+                - nation
+                - business
+                - technology
+                - entertainment
+                - sports
+                - science
+                - health
+          - name: apikey
+            in: query
+            description: API Key (is always {your_apikey})
+            required: true
+            schema:
+              type: string
+          - name: max
+            in: query
+            description: This parameter allows you to specify the number of news articles returned by the API. The minimum value of this parameter is 1 and the maximum value is 100.
+            required: true
+            schema:
+              type: integer
+          - name: page
+            in: query
+            description: This parameter allows you to control the pagination of the results returned by the API. The paging behavior is closely related to the value of the max parameter.
+            required: true
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Successful request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Articles'
+components:
+  schemas:
+    Articles:
+      type: object
+      properties:
+        totalArticles:
+          type: integer
+        articles:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              description:
+                type: string
+              content:
+                type: string
+              url:
+                type: string
+              image:
+                type: string
+              publishedAt:
+                type: string
+              source:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  url:
+                    type: string
+                
